@@ -124,23 +124,12 @@ class Composite(GeometryObject):
             return super().bounding_box()
 
         bbox = [o.bounding_box() for o in self.objects]
-        point_x = []
-        point_y = []
-        for box in bbox:
-            point_x.append(box[0])
-            point_x.append(box[2])
-        for box in bbox:
-            point_y.append(box[1])
-            point_y.append(box[3])
-        return (min(point_x), min(point_y), max(point_x), max(point_y))
+        xmin = min([xmin for (xmin, ymin, xmax, ymax) in bbox])
+        ymin = min([ymin for (xmin, ymin, xmax, ymax) in bbox])
+        xmax = max([xmax for (xmin, ymin, xmax, ymax) in bbox])
+        ymax = max([ymax for (xmin, ymin, xmax, ymax) in bbox])
 
-        # bbox = [o.bounding_box() for o in self.objects]
-        # xmin = min([xmin for (xmin, ymin, xmax, ymax) in bbox])
-        # ymin = min([ymin for (xmin, ymin, xmax, ymax) in bbox])
-        # xmax = max([xmax for (xmin, ymin, xmax, ymax) in bbox])
-        # ymax = max([ymax for (xmin, ymin, xmax, ymax) in bbox])
-
-        # return (xmin, ymin, xmax, ymax)
+        return (xmin, ymin, xmax, ymax)
 
     def to_svg(self, classname: str) -> str:
         s = ""
